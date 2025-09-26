@@ -18,11 +18,14 @@ export const SupplierModel = {
   },
 
   async create(supplier) {
+    // Bisa terima object tunggal atau array of objects
+    const payload = Array.isArray(supplier) ? supplier : [supplier];
+
     const { data, error } = await supabase
       .from("suppliers")
-      .insert([supplier])
-      .select()
-      .single();
+      .insert(payload)
+      .select(); // ambil semua row yang baru masuk
+
     if (error) throw error;
     return data;
   },

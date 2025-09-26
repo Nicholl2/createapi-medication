@@ -3,26 +3,27 @@ import { SupplierModel } from "../models/supplierModel.js";
 export const SupplierController = {
   async getAll(req, res) {
     try {
-      const suppliers = await SupplierModel.getAll();
-      res.json(suppliers);
+      const data = await SupplierModel.getAll();
+      res.json(data);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      res.status(400).json({ error: err.message });
     }
   },
 
   async getById(req, res) {
     try {
-      const supplier = await SupplierModel.getById(req.params.id);
-      res.json(supplier);
+      const data = await SupplierModel.getById(req.params.id);
+      res.json(data);
     } catch (err) {
-      res.status(404).json({ error: err.message });
+      res.status(400).json({ error: err.message });
     }
   },
 
   async create(req, res) {
     try {
-      const supplier = await SupplierModel.create(req.body);
-      res.status(201).json(supplier);
+      const suppliers = req.body; // bisa object atau array
+      const data = await SupplierModel.create(suppliers);
+      res.json({ message: "Insert berhasil", data });
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
@@ -30,8 +31,8 @@ export const SupplierController = {
 
   async update(req, res) {
     try {
-      const supplier = await SupplierModel.update(req.params.id, req.body);
-      res.json(supplier);
+      const data = await SupplierModel.update(req.params.id, req.body);
+      res.json({ message: "Update berhasil", data });
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
@@ -39,8 +40,8 @@ export const SupplierController = {
 
   async remove(req, res) {
     try {
-      await SupplierModel.remove(req.params.id);
-      res.json({ message: "Deleted successfully" });
+      const result = await SupplierModel.remove(req.params.id);
+      res.json(result);
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
